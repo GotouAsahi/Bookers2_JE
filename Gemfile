@@ -53,5 +53,9 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'devise'
-gem 'dotenv-rails'gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+gem 'dotenv-rails'
+gem "geocoder"
+gem 'jp_prefecture'
+
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 

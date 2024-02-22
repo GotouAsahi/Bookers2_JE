@@ -19,6 +19,24 @@ class User < ApplicationRecord
   validates :name, length: { minimum: 2, maximum: 20 }, uniqueness: true
   validates :introduction, length: { maximum: 50 }
 
+  include JpPrefecture
+  jp_prefecture :prefecture_code
+
+  geocoded_by :address_city
+  after_validation :geocode, if: :address_city_changed?
+
+  def prefecture_name
+    JpPrefecture::Prefecture.find(code: prefecture_code).try(:name)
+  end
+
+  def prefecture_name=(prefecture_name)
+    self.prefecture_code = JpPrefecture::Prefecture.find(name: prefecture_name).code
+  end
+
+  def join_address
+    "#{prefecture_name}#{address_city}#{address_street}#{address_building}"
+  end
+
   def follow(user)
     relationships.create(followed_id: user.id)
   end
